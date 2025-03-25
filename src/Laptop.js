@@ -12,7 +12,7 @@ function Laptop() {
   const { id } = useParams();
   
   const API = axios.create({
-    baseURL: 'https://your-backend.vercel.app', // Replace with your actual backend URL
+    baseURL: 'https://backendwith-frontend.vercel.app/', // Replace with your actual backend URL
     withCredentials: true,  // Required if using cookies/sessions
   });
   useEffect(() => {
