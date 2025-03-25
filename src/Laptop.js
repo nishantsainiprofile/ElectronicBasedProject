@@ -10,15 +10,19 @@ function Laptop() {
 
   const navigate = useNavigate();
   const { id } = useParams();
-
+  
+  const API = axios.create({
+    baseURL: 'https://your-backend.vercel.app', // Replace with your actual backend URL
+    withCredentials: true,  // Required if using cookies/sessions
+  });
   useEffect(() => {
     const fetchData = async () => {
       try {
         const responses = await Promise.all([
-          axios.get("http://localhost:5002/api/Laptop"),
-          axios.get("http://localhost:5002/api/Mobile"),
-          axios.get("http://localhost:5002/api/ChargingMobileBattery"),
-          axios.get("http://localhost:5002/api/watches"),
+          API.get("http://localhost:5002/api/Laptop"),
+          API.get("http://localhost:5002/api/Mobile"),
+          API.get("http://localhost:5002/api/ChargingMobileBattery"),
+          API.get("http://localhost:5002/api/watches"),
         ]);
 
         const laptopData = responses[0]?.data?.LaptopObject || [];
