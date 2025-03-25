@@ -77,7 +77,7 @@ function Laptop() {
                 <h3>{selectedItem.series || selectedItem.Laptop || selectedItem.BrandName || selectedItem.BrandName || selectedItem.BrandName}</h3>
               </div>
               <img
-                src={`http://localhost:5002/${selectedItem.laptopImage || selectedItem.MobileImages?.replace(/\\/g, "/") || selectedItem.MobileBatteryImage || selectedItem.WatchImages}`}
+                src={`https://backendwith-frontend.vercel.app/${selectedItem.laptopImage || selectedItem.MobileImages?.replace(/\\/g, "/") || selectedItem.MobileBatteryImage || selectedItem.WatchImages}`}
                 alt="Product"
                 className="thumbnail"
               />
@@ -103,7 +103,7 @@ function Laptop() {
       <div className="grid-x grid-padding-x small-up-1 medium-up-2 large-up-4">
         {combinedData.length > 0 ? (
           combinedData.map((item, index) => {
-            const imagePath = `http://localhost:5002/${item.laptopImage || item.MobileImages?.replace(/\\/g, "/") || item.MobileBatteryImage || item.WatchImages}`;
+            const imagePath = `https://backendwith-frontend.vercel.app/${item.laptopImage || item.MobileImages?.replace(/\\/g, "/") || item.MobileBatteryImage || item.WatchImages}`;
 
             console.log(`Rendering item ${index}:`, item);
             console.log("Image path:", imagePath); // Debugging log
