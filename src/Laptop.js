@@ -23,10 +23,10 @@ function Laptop() {
           // API.get("http://localhost:5002/api/Mobile"),
           // API.get("http://localhost:5002/api/ChargingMobileBattery"),
           // API.get("http://localhost:5002/api/watches"),
-         API.get("https://your-backend-url.com/api/Laptop"),
-         API.get("https://your-backend-url.com/api/Mobile"),
-         API.get("https://your-backend-url.com/api/ChargingMobileBattery"),
-         API.get("https://your-backend-url.com/api/watches"),
+          API.get("/api/Laptop", { withCredentials: true }),
+          API.get("/api/Mobile", { withCredentials: true }),
+          API.get("/api/ChargingMobileBattery", { withCredentials: true }),
+          API.get("/api/watches", { withCredentials: true }),
         ]);
 
         const laptopData = responses[0]?.data?.LaptopObject || [];
