@@ -19,10 +19,14 @@ function Laptop() {
     const fetchData = async () => {
       try {
         const responses = await Promise.all([
-          API.get("http://localhost:5002/api/Laptop"),
-          API.get("http://localhost:5002/api/Mobile"),
-          API.get("http://localhost:5002/api/ChargingMobileBattery"),
-          API.get("http://localhost:5002/api/watches"),
+          // API.get("http://localhost:5002/api/Laptop"),
+          // API.get("http://localhost:5002/api/Mobile"),
+          // API.get("http://localhost:5002/api/ChargingMobileBattery"),
+          // API.get("http://localhost:5002/api/watches"),
+         API.get("https://your-backend-url.com/api/Laptop"),
+         API.get("https://your-backend-url.com/api/Mobile"),
+         API.get("https://your-backend-url.com/api/ChargingMobileBattery"),
+         API.get("https://your-backend-url.com/api/watches"),
         ]);
 
         const laptopData = responses[0]?.data?.LaptopObject || [];
