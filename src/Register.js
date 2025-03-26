@@ -175,7 +175,7 @@ function Register() {
 
   function SubmitRegister() {
     axios
-      .post("http://localhost:5002/api/Register", {
+      .post("https://electronic-based-project.vercel.app/api/Register", {
         name,
         email,
         password,

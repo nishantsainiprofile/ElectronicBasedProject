@@ -58,7 +58,7 @@ function SelectedElectronicsId() {
     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh" }}>
       <div style={{ textAlign: "center", border: "1px solid #ddd", padding: "20px", borderRadius: "12px", maxWidth: "600px", width: "100%" }}>
         <img
-          src={`http://localhost:5002/${SelectedElectronicProduct.laptopImage}`}
+          src={`https://backendwith-frontend.vercel.app/${SelectedElectronicProduct.laptopImage}`}
           alt={SelectedElectronicProduct.series}
           style={{ width: "100%", height: "200px", objectFit: "contain", marginBottom: "20px" }}
         />
