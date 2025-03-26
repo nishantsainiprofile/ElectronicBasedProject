@@ -6,7 +6,7 @@ const Paytm = () => {
     console.log("this is paytmpayment")
     try {
       // Request payment details from the backend
-      const response = await axios.post("http://localhost:5002/api/paytm/initiate", {
+      const response = await axios.post("https://electronic-based-project.vercel.app/api/paytm/initiate", {
        
         amount: 50000, // Amount in paisa (₹500)
       }).then((response)=>{

@@ -57,7 +57,7 @@ function MobileChargerDisplay() {
                 <h3>{charger.series}</h3>
               </div>
               <img
-                src={`http://localhost:5002/${charger.MobileBatteryImage}`}
+                src={`https://electronic-based-project.vercel.app/${charger.MobileBatteryImage}`}
                 alt="Laptop"
                 className="thumbnail"
               />
@@ -86,7 +86,7 @@ function MobileChargerDisplay() {
             <div className="cell" key={index}>
               <div className="card">
                 <img
-                  src={`http://localhost:5002/${object.MobileBatteryImage}`}
+                  src={`https://electronic-based-project.vercel.app/${object.MobileBatteryImage}`}
                   alt="Laptop"
                   className="thumbnail"
                   onClick={() => handleImageClick(object, index)}
