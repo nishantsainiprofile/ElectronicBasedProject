@@ -13,7 +13,8 @@ function MobileChargerDisplay() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5002/api/ChargingMobile")
+      // .get("http://localhost:5002/api/ChargingMobile")
+      .get("https://backendwith-frontend.vercel.app/api/ChargingMobile")
       .then((response) => {
         console.log(response.data);
         setMobileChargerData(response.data.MobileCharger); // Update state with fetched data
