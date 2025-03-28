@@ -80,11 +80,19 @@ function Laptop() {
               <div className="card-divider">
                 <h3>{selectedItem.series || selectedItem.Laptop || selectedItem.BrandName || selectedItem.BrandName || selectedItem.BrandName}</h3>
               </div>
+
               <img
-                src={`https://backendwith-frontend.vercel.app/${selectedItem.laptopImage || selectedItem.MobileImages?.replace(/\\/g, "/") || selectedItem.MobileBatteryImage || selectedItem.WatchImages}`}
+                // src={`https://backendwith-frontend.vercel.app/${selectedItem.laptopImage || selectedItem.MobileImages?.replace(/\\/g, "/") || selectedItem.MobileBatteryImage || selectedItem.WatchImages}`}
+                src={
+                  selectedItem.laptopImage || 
+                  selectedItem.MobileImages || 
+                  selectedItem.MobileBatteryImage || 
+                  selectedItem.WatchImages
+                }
                 alt="Product"
                 className="thumbnail"
               />
+              
               <div className="card-section">
                 {Object.entries(selectedItem).map(([key, value], index) => (
                   <p key={index}>
