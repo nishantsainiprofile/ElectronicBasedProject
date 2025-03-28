@@ -107,7 +107,8 @@ function Laptop() {
       <div className="grid-x grid-padding-x small-up-1 medium-up-2 large-up-4">
         {combinedData.length > 0 ? (
           combinedData.map((item, index) => {
-            const imagePath = `https://backendwith-frontend.vercel.app/${item.laptopImage || item.MobileImages?.replace(/\\/g, "/") || item.MobileBatteryImage || item.WatchImages}`;
+            // const imagePath = `https://backendwith-frontend.vercel.app/${item.laptopImage || item.MobileImages?.replace(/\\/g, "/") || item.MobileBatteryImage || item.WatchImages}`;
+            const imagePath = item.laptopImage || item.MobileImages || item.MobileBatteryImage || item.WatchImages;
 
             console.log(`Rendering item ${index}:`, item);
             console.log("Image path:", imagePath); // Debugging log
