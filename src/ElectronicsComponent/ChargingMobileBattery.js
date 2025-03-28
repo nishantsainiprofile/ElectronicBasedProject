@@ -53,7 +53,7 @@ function ChargingMobileBattery() {
     console.log([...finalData]); // Debugging: Log all form data before submitting
 
     axios
-      .post("http://localhost:5002/api/ChargingMobile", finalData, {
+      .post("https://backendwith-frontend.vercel.app/api/ChargingMobile", finalData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then((response) => {

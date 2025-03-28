@@ -53,7 +53,7 @@ function BuildLaptop() {
     }
 
     axios
-      .post("http://localhost:5002/api/BuildLaptop", finalData, {
+      .post("https://backendwith-frontend.vercel.app/api/BuildLaptop", finalData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then((response) => {

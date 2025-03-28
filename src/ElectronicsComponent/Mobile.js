@@ -52,7 +52,7 @@ function Mobile() {
     console.log([...finalData]); // Debugging: Log all form data before submitting
 
     axios
-      .post("http://localhost:5002/api/UploadMobile", finalData, {
+      .post("https://backendwith-frontend.vercel.app/api/UploadMobile", finalData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then((response) => {
