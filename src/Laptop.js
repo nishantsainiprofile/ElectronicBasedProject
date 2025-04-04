@@ -808,7 +808,7 @@ function Laptop() {
           // axios.get("http://localhost:5007/api/watches"),
           // axios.get("http://localhost:5007/api/laptopCharger"),
           axios.get("https://backendwith-frontend.vercel.app/Laptop"),
-          axios.get("https://backendwith-frontend.vercel.app//Mobile"),
+          axios.get("https://backendwith-frontend.vercel.app/Mobile"),
           axios.get("https://backendwith-frontend.vercel.app/mobileCharger"),
           axios.get("https://backendwith-frontend.vercel.app/mobileChargingBattery"),
           axios.get("https://backendwith-frontend.vercel.app/api/watches"),
