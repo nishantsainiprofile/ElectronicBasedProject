@@ -1,26 +1,32 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import axios from "axios";
 import { MyContext } from "../UseContext";
-import { useContext } from "react";
 import Login from "../Login";
 import { useNavigate } from "react-router-dom";
 
 function MobileCharger() {
+  const navigate = useNavigate();
   const { LoginState } = useContext(MyContext);
-  const navigate=useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({});
-  const imageLaptop = useRef();
-  const [preview, setPreview] = useState(null);
+  const [selectedImages, setSelectedImages] = useState([]);
+  const imagemobileCharger = useRef();
 
-  // Change image preview
-  function ImageChange() {
-    const files = imageLaptop.current.files[0];
-    if (files) {
-      const reader = new FileReader();
-      reader.onloadend = () => setPreview(reader.result);
-      reader.readAsDataURL(files);
+  // Handle image selection
+  function handleImageChange(event) {
+    const files = Array.from(event.target.files);
+
+    if (selectedImages.length + files.length > 4) {
+      alert("You can only upload up to 4 images.");
+      return;
     }
+
+    setSelectedImages((prevImages) => [...prevImages, ...files]);
+  }
+
+  // Remove selected image
+  function removeImage(index) {
+    setSelectedImages((prevImages) => prevImages.filter((_, i) => i !== index));
   }
 
   // Handle input change
@@ -31,151 +37,122 @@ function MobileCharger() {
 
   // Save and Continue
   function saveAndContinue() {
-    if (currentStep < 2) {
-      setCurrentStep(currentStep + 1);
+    if (Object.keys(formData).length < 5) {
+      alert("Please fill at least 5 fields before proceeding.");
+      return;
     }
+    setCurrentStep(2);
   }
 
   // Submit the form
-  function Submit() {
-    const finalData = new FormData();
-
-    // Append form data
-    Object.keys(formData).forEach((key) => {
-      finalData.append(key, formData[key]);
-    });
-
-    // Append image only if a file is selected
-    if (imageLaptop.current && imageLaptop.current.files[0]) {
-      finalData.append("LaptopImage", imageLaptop.current.files[0]);
+  function handleSubmit() {
+    if (selectedImages.length === 0) {
+      alert("Please upload at least one image.");
+      return;
     }
 
+    const finalData = new FormData();
+
+    // Append text data
+    Object.keys(formData).forEach((key) => finalData.append(key, formData[key]));
+
+    // Append images
+    selectedImages.forEach((file) => finalData.append("mobileChargerImages", file));
+
     axios
-      .post("https://backendwith-frontend.vercel.app/api/MobileCharger", finalData, {
+      // .post("http://localhost:5007/api/mobileCharger", finalData, {
+      .post("https://backendwith-frontend.vercel.app/api/mobileCharger", finalData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
-      .then((response) => {
-        console.log(response.data);
-        alert("Form submitted successfully!");
+      .then(() => {
+        alert("mobileCharger details uploaded successfully!");
+        navigate("/mobileCharger-list");
       })
       .catch((error) => {
         console.error(error);
-        alert("Failed to submit the form. Please try again.");
+        alert("Error submitting the form. Please try again.");
       });
   }
 
-  const firstSetFields = [
-    "Brand",
-    "Colour",
-    "Model	",
-    "Product Dimensions	",
-    "Special Features ",
-    "Mounting Hardware	",
-    "Number of items	",
-    "Wattage	",
-    "Batteries",
-    "Item model number",
-    "Mounting Type	",
-    "Processor Type",
-    "charging Speed",
-    " power source",
-    " output voltage",
-    "frequency range",
-    
+  const firstStepFields = [
+    "series","colour", "price","brandname" 
+    ,"formFactor", "itemHeight", "productDimensions", "itemModelNumber",
+    "voltage", "chargingSpeed", "ComponentsIncluded", "specialfeatures",
   ];
 
-  const secondSetFields = [
-    "compatible devices",
-    "Voltage",
-    "Included Components",
-    "Manufacturer",
-    "Country of Origin",
-    "Item Weight",
+  const secondStepFields = [
+   "manufacturer", "countryoforigin", "itemweight", "mobileChargerImages",
   ];
 
   return (
-    <div>
+    <div className="container">
       {LoginState ? (
-        <div className="grid-container">
-          <div className="grid-x grid-padding-x align-center">
-            <div className="cell medium-8 large-6">
-            <button
-                onClick={() => navigate(-1)}
-                style={{
-                  marginBottom: "15px",
-                  backgroundColor: "#ccc",
-                  border: "none",
-                  padding: "8px 12px",
-                  cursor: "pointer",
-                }}
-              >
-                ⬅ Back
-              </button>
-              <h2 className="text-center">Upload Laptop Information</h2>
-              <div className="callout">
-                {currentStep === 1 &&
-                  firstSetFields.map((field) => (
-                    <label key={field}>
-                      {field}
-                      <input
-                        type="text"
-                        name={field.toLowerCase().replace(/\s+/g, "")}
-                        placeholder={`Enter ${field}`}
-                        onChange={handleChange}
-                        className="input-group-field"
-                      />
-                    </label>
-                  ))}
-                {currentStep === 2 &&
-                  secondSetFields.map((field) => (
-                    <label key={field}>
-                      {field}
-                      <input
-                        type="text"
-                        name={field.toLowerCase().replace(/\s+/g, "")}
-                        placeholder={`Enter ${field}`}
-                        onChange={handleChange}
-                        className="input-group-field"
-                      />
-                    </label>
-                  ))}
-                {currentStep === 2 && (
-                  <label>
-                    Image Laptop
-                    <input
-                      type="file"
-                      ref={imageLaptop}
-                      onChange={ImageChange}
-                      className="input-group-field"
-                    />
-                  </label>
-                )}
-                {preview && currentStep === 2 && (
-                  <div className="text-center">
-                    <img
-                      src={preview}
-                      alt="Preview"
-                      style={{ width: "100px", marginTop: "10px" }}
-                    />
+        <div className="form-container">
+          <button onClick={() => navigate(-1)} className="back-btn">⬅ Back</button>
+          <h2 className="text-center">Upload mobileCharger Details</h2>
+
+          {/* Step 1 - Basic Laptop Details */}
+          {currentStep === 1 && firstStepFields.map((field) => (
+            <label key={field}>
+              {field}
+              <input
+                type="text"
+                name={field.toLowerCase().replace(/\s+/g, "_")}
+                placeholder={`Enter ${field}`}
+                onChange={handleChange}
+                required
+              />
+            </label>
+          ))}
+
+          {/* Step 2 - Advanced Watch Details & Image Upload */}
+          {currentStep === 2 && (
+            <>
+              {secondStepFields.map((field) => (
+                <label key={field}>
+                  {field}
+                  <input
+                    type="text"
+                    name={field.toLowerCase().replace(/\s+/g, "_")}
+                    placeholder={`Enter ${field}`}
+                    onChange={handleChange}
+                    required
+                  />
+                </label>
+              ))}
+
+              {/* Image Upload Section */}
+              <label>Upload mobile Images (Max 4)
+                <input
+                  type="file"
+                  ref={imagemobileCharger}
+                  onChange={handleImageChange}
+                  multiple
+                  accept="image/*"
+                />
+              </label>
+
+              {/* Image Previews in Row */}
+              <div className="image-preview">
+                {selectedImages.map((file, index) => (
+                  <div key={index} className="image-container">
+                    <img src={URL.createObjectURL(file)} alt="Preview" className="preview-image" />
+                    <button className="remove-btn" onClick={() => removeImage(index)}>X</button>
                   </div>
-                )}
-                {currentStep === 1 && (
-                  <button onClick={saveAndContinue} className="button expanded">
-                    Save and Continue
-                  </button>
-                )}
-                {currentStep === 2 && (
-                  <button onClick={Submit} className="button expanded">
-                    Submit
-                  </button>
-                )}
+                ))}
               </div>
-            </div>
+            </>
+          )}
+
+          {/* Navigation Buttons */}
+          <div className="button-group">
+            {currentStep === 1 && <button onClick={saveAndContinue} className="btn">Save and Continue</button>}
+            {currentStep === 2 && <button onClick={handleSubmit} className="btn submit-btn">Submit</button>}
           </div>
         </div>
       ) : (
         <div>
-          <p className="text-center">Please login before uploading a laptop</p>
+          <p className="text-center">Please login before uploading a mobileCharger</p>
           <Login />
         </div>
       )}

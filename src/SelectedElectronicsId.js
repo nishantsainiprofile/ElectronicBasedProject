@@ -43,10 +43,11 @@ import { useNavigate } from "react-router-dom"; // for navigation
 import { MyContext } from "./UseContext";
 
 function SelectedElectronicsId() {
-  const { SelectedElectronicProduct } = useContext(MyContext);
+  const { selectedElectronics } = useContext(MyContext);
+  console.log(selectedElectronics , "this is the selected Product");
   const navigate = useNavigate();
 
-  if (!SelectedElectronicProduct) {
+  if (!selectedElectronics) {
     return <p style={{ textAlign: "center", marginTop: "50px" }}>No product details found!</p>;
   }
 
@@ -57,12 +58,14 @@ function SelectedElectronicsId() {
   return (
     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh" }}>
       <div style={{ textAlign: "center", border: "1px solid #ddd", padding: "20px", borderRadius: "12px", maxWidth: "600px", width: "100%" }}>
-        <img
-          src={`https://backendwith-frontend.vercel.app/${SelectedElectronicProduct.laptopImage}`}
-          alt={SelectedElectronicProduct.series}
-          style={{ width: "100%", height: "200px", objectFit: "contain", marginBottom: "20px" }}
-        />
-     {Object.entries(SelectedElectronicProduct).map(([key, value], index) => (
+      <img
+  // src={`http://localhost:5007/${selectedElectronics.laptopImages.replace(/\\/g, "/")}`}
+  src={`https://backendwith-frontend.vercel.app/${selectedElectronics.laptopImages.replace(/\\/g, "/")}`}
+  alt={selectedElectronics.series}
+  style={{ width: "100%", height: "200px", objectFit: "contain", marginBottom: "20px" }}
+/>
+
+     {Object.entries(selectedElectronics).map(([key, value], index) => (
   key !== "laptopImage" && (
     <p key={index} style={{ margin: "8px 0" }}>
       <strong>{formatKey(key)}:</strong> {typeof value === "object" ? JSON.stringify(value) : value}

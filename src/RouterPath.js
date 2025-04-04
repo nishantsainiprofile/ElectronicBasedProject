@@ -23,8 +23,9 @@ import App from "./App"
 import SearchElectronics from "./SearchElectronics";
 import SearchedElectronics from "./SearchedElectronics";
 import SelectedElectronicsId from "./SelectedElectronicsId";
-// import DebitCardPayment from "./DebitCard";
+import DebitCardPayment from "./DebitCardPayment";
 import UpiPayment from "./UPIPayment"; 
+import AboutUs from "./AboutUs";
 // import QrScan from "./QRScan"; 
 // import COD from "./COD"; 
 // import MobileChargerDisplay from "./MobileChargerDisplay";
@@ -34,12 +35,14 @@ function RouterPath(){
     const [SelectLaptopState , setSelectLaptopState] =useState(false);
     const [ImageIndex, setImageIndex]= useState(null);
     const [loginMessage, setLoginMessage] = useState("");
+    const [Email, setEmail] = useState("");
     const [LoginState , setLoginState]= useState(false);
     const [SelectElectronicOption,setSelectElectronicOption] = useState(null);
     const [MobileChargerData , setMobileChargerData] = useState([]);
     const[FilteredProducts ,setFilteredProducts] = useState();
     const[SelectedElectronicProduct ,setSelectedElectronicProduct] = useState();
-  
+    const [bagItems, setBagItems] = useState([]);
+
     console.log(FindObject)
     return(<> 
       <div >
@@ -64,6 +67,8 @@ function RouterPath(){
   setFilteredProducts,
   SelectedElectronicProduct,
   setSelectedElectronicProduct ,
+  Email, setEmail ,
+  bagItems, setBagItems,
 }} >
     <BrowserRouter>
     
@@ -90,10 +95,11 @@ function RouterPath(){
             <Route path="/SearchedElectronics" element={<SearchedElectronics/>}/>
             <Route path="/SelectedElectronicsId/:series" element={<SelectedElectronicsId />} />
             {/* <Route path="/App" element={<CreditCardPayment />} /> */}
-            {/* <Route path="/debit-card" element={<DebitCardPayment />} /> */}
+            <Route path="/debit-card" element={<DebitCardPayment />} />
             <Route path="/upi-payment" element={<UpiPayment />} />
             {/* <Route path="/qr-scan" element={<QrScan />} /> */}
             {/* <Route path="/cod" element={<COD />} /> */}
+            <Route path="/AboutUs" element={<AboutUs />} />
           </Routes>
     </BrowserRouter>
     </MyContext.Provider>

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@shadcn/ui": "^0.0.4",
     "@stripe/react-stripe-js": "^2.8.1",
     "@stripe/stripe-js": "^4.8.0",
     "@testing-library/jest-dom": "^5.17.0",
@@ -10,6 +11,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.9",
     "foundation-sites": "^6.9.0",
+    "framer-motion": "^12.6.2",
     "lucide-react": "^0.483.0",
     "multer": "^1.4.5-lts.1",
     "paytmchecksum": "^1.5.1",

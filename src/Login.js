@@ -7,7 +7,7 @@ function Login() {
   const inputEmail = useRef();
   const inputPassword = useRef();
   const [loginMessage, setLoginMessage] = useState("");
-  const { setLoginState , SelectElectronicOption } = useContext(MyContext); // Access setLoginState directly
+  const { setLoginState , SelectElectronicOption , setEmail} = useContext(MyContext); // Access setLoginState directly
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
    
@@ -20,10 +20,13 @@ function Login() {
     if (!inputEmail.current.value || !inputPassword.current.value) {
       setLoginMessage("Please fill in both fields.");
       return;
+    }else{
+      setEmail(inputEmail.current.value)
     }
-
+    
     setLoading(true); // Show loading spinner while the request is being processed
     axios
+      // .post("http://localhost:5007/api/Login", {
       .post("https://backendwith-frontend.vercel.app/api/Login", {
       // .post("http://localhost:5002/api/Login", {
         email: inputEmail.current.value,

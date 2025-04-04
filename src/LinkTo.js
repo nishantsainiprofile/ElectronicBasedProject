@@ -68,8 +68,12 @@ import SearchElectronics from "./SearchElectronics";
 import { useContext } from "react";
 import { MyContext } from "./UseContext";
 import "./App.css";
+import Bag from "./Bag";
+import { FaShoppingBag } from "react-icons/fa";
+
+
 function LinkTo() {
-    const { ImageIndex } = useContext(MyContext);
+    const { ImageIndex ,bagItems} = useContext(MyContext);
     return (
       <div className="RouterPath">
         <SideMenuBar />
@@ -83,6 +87,8 @@ function LinkTo() {
             <Link to="/UploadLaptop">UploadLaptop</Link>
           </div>
           {/* Search bar inline now */}
+          <FaShoppingBag size={28} color="green" />{bagItems.length}
+          {/* <Bag/> */}
           <SearchElectronics />
         </div>
       </div>
