@@ -909,7 +909,7 @@ function Laptop() {
                   {validImages.map((img, index) => (
                     <div key={index} className="relative p-2">
                       {/* <img src={`http://localhost:5007/${img}`} alt="Product" className="w-full h-32 object-contain rounded-lg shadow-md" /> */}
-                      <img src={`https://backendwith-frontend.vercel.app/${img}`} alt="Product" className="w-full h-32 object-contain rounded-lg shadow-md" />
+                      <img src={img} alt="Product" className="w-full h-32 object-contain rounded-lg shadow-md" />
                     </div>
                   ))}
                 </Slider>
