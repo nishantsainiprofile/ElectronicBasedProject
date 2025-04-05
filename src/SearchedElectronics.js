@@ -19,6 +19,7 @@
 //       {FilteredProducts && FilteredProducts.length > 0 ? (
 //         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "20px" }}>
 //           {FilteredProducts.map((product, index) => (
+            
 //             <div
 //               key={index}
 //               style={{
@@ -50,8 +51,8 @@
 //     </div>
 //   );
 // }
-
 // export default SearchedBlog;
+// SearchedBlog.js
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { MyContext } from "./UseContext";
@@ -68,24 +69,24 @@ function SearchedBlog() {
     navigate(`/SelectedElectronicsId/${product.series}`);
   };
 
-  // Helper to get image array from product
+  // Get the first available image array from the product
   const getImageArray = (product) => {
     return (
       product.laptopImages ||
-      product.mobileChargingBatteryImages ||
-      product.mobileChargerImages ||
+      product.laptopImage ||
       product.laptopChargerImages ||
       product.mobileimages ||
       product.watchimages ||
+      product.mobileChargingBatteryImages ||
       []
     );
   };
 
-  // Carousel settings
+  // Slider settings
   const sliderSettings = {
-    dots: false,
+    dots: true,
     infinite: true,
-    speed: 400,
+    speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: true,
@@ -97,13 +98,7 @@ function SearchedBlog() {
     <div>
       <h2>Search Results:</h2>
       {FilteredProducts && FilteredProducts.length > 0 ? (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "20px",
-          }}
-        >
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "20px" }}>
           {FilteredProducts.map((product, index) => {
             const images = getImageArray(product);
 
@@ -114,20 +109,20 @@ function SearchedBlog() {
                   border: "1px solid #ddd",
                   padding: "10px",
                   borderRadius: "8px",
-                  cursor: "pointer",
                   textAlign: "center",
+                  cursor: "pointer",
                 }}
                 onClick={() => handleProductClick(product)}
               >
-                {/* Slider for product images */}
+                {/* Image carousel */}
                 <div style={{ width: "100%", height: "150px" }}>
-                  {images.length > 0 ? (
+                  {Array.isArray(images) && images.length > 0 ? (
                     <Slider {...sliderSettings}>
-                      {images.map((img, idx) => (
-                        <div key={idx}>
+                      {images.map((imgUrl, imgIndex) => (
+                        <div key={imgIndex}>
                           <img
-                            src={img}
-                            alt={product.series}
+                            src={imgUrl}
+                            alt={`${product.series}-${imgIndex}`}
                             style={{
                               width: "100%",
                               height: "150px",
@@ -139,14 +134,12 @@ function SearchedBlog() {
                       ))}
                     </Slider>
                   ) : (
-                    <p>No image</p>
+                    <p>No images</p>
                   )}
                 </div>
 
                 <h4 style={{ margin: "10px 0" }}>{product.series}</h4>
-                <p>
-                  <strong>Price:</strong> ₹{product.price || "N/A"}
-                </p>
+                <p><strong>Price:</strong> ₹{product.price || "N/A"}</p>
               </div>
             );
           })}
@@ -159,4 +152,3 @@ function SearchedBlog() {
 }
 
 export default SearchedBlog;
-
