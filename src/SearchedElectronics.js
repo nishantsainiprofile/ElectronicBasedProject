@@ -410,8 +410,8 @@ function SearchedBlog() {
                       src={img}
                       alt={`product-${i}`}
                       style={{
-                        width: "100%",
-                        height: "100%",
+                        width: "100px",
+                        height: "100px",
                         objectFit: "cover",
                         borderRadius: "5px",
                       }}
