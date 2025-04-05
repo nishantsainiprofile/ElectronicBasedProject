@@ -247,6 +247,100 @@
 //   );
 // }
 // export default SearchedBlog;
+// import React, { useContext } from "react";
+// import { useNavigate } from "react-router-dom";
+// import { MyContext } from "./UseContext";
+
+// function SearchedBlog() {
+//   const { FilteredProducts, setSelectedElectronicProduct } = useContext(MyContext);
+//   const navigate = useNavigate();
+
+//   const handleProductClick = (product) => {
+//     setSelectedElectronicProduct(product);
+//     navigate(`/SelectedElectronicsId/${product.series}`);
+//   };
+
+//   const getImageArray = (product) => {
+//     return (
+//       product.laptopImages ||
+//       product.laptopImage ||
+//       product.mobileChargingBatteryImages ||
+//       product.mobileChargerImages ||
+//       product.laptopChargerImages ||
+//       product.mobileimages ||
+//       product.watchimages ||
+//       []
+//     );
+//   };
+
+//   return (
+//     <div>
+//       <h2>Search Results:</h2>
+//       {FilteredProducts && FilteredProducts.length > 0 ? (
+//         <div
+//           style={{
+//             display: "grid",
+//             gridTemplateColumns: "repeat(4, 1fr)",
+//             gap: "20px",
+//           }}
+//         >
+//           {FilteredProducts.map((product, index) => {
+//             const images = getImageArray(product);
+
+//             return (
+//               <div
+//                 key={index}
+//                 onClick={() => handleProductClick(product)}
+//                 style={{
+//                   border: "1px solid #ddd",
+//                   padding: "10px",
+//                   borderRadius: "8px",
+//                   cursor: "pointer",
+//                   textAlign: "center",
+//                   overflow: "hidden",
+//                 }}
+//               >
+//                 <div
+//                   style={{
+//                     display: "flex",
+//                     overflowX: "auto",
+//                     gap: "10px",
+//                     paddingBottom: "10px",
+//                     scrollBehavior: "smooth",
+//                   }}
+//                 >
+//                   {images.map((img, i) => (
+//                     <img
+//                       key={i}
+//                       src={img}
+//                       alt={`product-${i}`}
+//                       style={{
+//                         flex: "0 0 auto",
+//                         width: "100px",
+//                         height: "150px",
+//                         objectFit: "cover",
+//                         borderRadius: "5px",
+//                       }}
+//                     />
+//                   ))}
+//                 </div>
+
+//                 <h4 style={{ margin: "10px 0" }}>{product.series}</h4>
+//                 <p>
+//                   <strong>Price:</strong> ₹{product.price || "N/A"}
+//                 </p>
+//               </div>
+//             );
+//           })}
+//         </div>
+//       ) : (
+//         <p>No products found!</p>
+//       )}
+//     </div>
+//   );
+// }
+
+// export default SearchedBlog;
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { MyContext } from "./UseContext";
@@ -285,7 +379,7 @@ function SearchedBlog() {
           }}
         >
           {FilteredProducts.map((product, index) => {
-            const images = getImageArray(product);
+            const images = getImageArray(product).slice(0, 4); // Only take first 4 images
 
             return (
               <div
@@ -297,16 +391,17 @@ function SearchedBlog() {
                   borderRadius: "8px",
                   cursor: "pointer",
                   textAlign: "center",
-                  overflow: "hidden",
                 }}
               >
                 <div
                   style={{
-                    display: "flex",
-                    overflowX: "auto",
-                    gap: "10px",
-                    paddingBottom: "10px",
-                    scrollBehavior: "smooth",
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gridTemplateRows: "1fr 1fr",
+                    gap: "5px",
+                    width: "100%",
+                    height: "200px",
+                    marginBottom: "10px",
                   }}
                 >
                   {images.map((img, i) => (
@@ -315,9 +410,8 @@ function SearchedBlog() {
                       src={img}
                       alt={`product-${i}`}
                       style={{
-                        flex: "0 0 auto",
-                        width: "150px",
-                        height: "150px",
+                        width: "100%",
+                        height: "100%",
                         objectFit: "cover",
                         borderRadius: "5px",
                       }}
