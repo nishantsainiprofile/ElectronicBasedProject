@@ -931,7 +931,7 @@ function Laptop() {
     <div className="product-container">
       {combinedData.length > 0 ? (
         combinedData.map((item, index) => {
-          const imagePaths = item.laptopImages || item.MobileImages || item.mobileChargingBatteryImages || item.watchimages || item.laptopChargerImages || [];
+          const imagePaths = item.laptopImages || item.mobileimages || item.mobileChargingBatteryImages || item.watchimages || item.laptopChargerImages || [];
           const displayedImages = Array.isArray(imagePaths) ? imagePaths.slice(0, 4).map(img => img.replace(/\\/g, "/")) : [];
 
           const isInBag = bagItems?.some((bagItem) => bagItem._id === item._id) || false;
