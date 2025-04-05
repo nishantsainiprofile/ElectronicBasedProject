@@ -5,6 +5,7 @@ import { MyContext } from "./UseContext";
 
 function SearchedBlog() {
   const { FilteredProducts ,setSelectedElectronicProduct } = useContext(MyContext);
+  console.log(FilteredProducts);
   const navigate = useNavigate();
 
   const handleProductClick = (product) => {
