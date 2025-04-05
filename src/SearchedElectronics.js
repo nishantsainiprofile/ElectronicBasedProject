@@ -316,7 +316,7 @@ function SearchedBlog() {
                       alt={`product-${i}`}
                       style={{
                         flex: "0 0 auto",
-                        width: "100px",
+                        width: "150px",
                         height: "150px",
                         objectFit: "cover",
                         borderRadius: "5px",
