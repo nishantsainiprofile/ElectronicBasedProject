@@ -30,7 +30,10 @@ function SearchedBlog() {
               onClick={() => handleProductClick(product)}
             >
               <img
-                src={`https://backendwith-frontend.vercel.app/${product.laptopImage}`}
+                // src={`https://backendwith-frontend.vercel.app/${product.laptopImage}`}
+                src={product.laptopImages||product.mobileChargingBatteryImages|| product.mobileChargerImages
+                     || product.laptopChargerImages || product.mobileimages || product.watchimages
+                }
                 alt={product.series}
                 style={{ width: "100%", height: "150px", objectFit: "cover" }}
               />
