@@ -60,11 +60,11 @@ function MobileChargingBattery() {
     selectedImages.forEach((file) => finalData.append("mobileChargingBatteryImages", file));
 
     axios
-      .post("http://localhost:5007/api/mobileChargingBattery", finalData, {
+      .post("https://backendwith-frontend.vercel.app/api/mobileChargingBattery", finalData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then(() => {
-        alert("mobileCharger details uploaded successfully!");
+        alert("mobileChargingBattery details uploaded successfully!");
         navigate("/mobileChargingBattery-list");
       })
       .catch((error) => {
