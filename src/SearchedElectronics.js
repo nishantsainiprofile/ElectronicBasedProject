@@ -248,11 +248,8 @@
 // }
 // export default SearchedBlog;
 import React, { useContext } from "react";
-import Slider from "react-slick";
 import { useNavigate } from "react-router-dom";
 import { MyContext } from "./UseContext";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 
 function SearchedBlog() {
   const { FilteredProducts, setSelectedElectronicProduct } = useContext(MyContext);
@@ -274,18 +271,6 @@ function SearchedBlog() {
       product.watchimages ||
       []
     );
-  };
-
-  // Slick slider settings
-  const sliderSettings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 2000,
-    arrows: false,
   };
 
   return (
@@ -312,28 +297,34 @@ function SearchedBlog() {
                   borderRadius: "8px",
                   cursor: "pointer",
                   textAlign: "center",
+                  overflow: "hidden",
                 }}
               >
-                {images.length > 0 ? (
-                  <Slider {...sliderSettings}>
-                    {images.map((img, i) => (
-                      <div key={i}>
-                        <img
-                          src={img}
-                          alt={`product-${i}`}
-                          style={{
-                            height: "180px",
-                            width: "100%",
-                            objectFit: "cover",
-                            borderRadius: "6px",
-                          }}
-                        />
-                      </div>
-                    ))}
-                  </Slider>
-                ) : (
-                  <p>No images</p>
-                )}
+                <div
+                  style={{
+                    display: "flex",
+                    overflowX: "auto",
+                    gap: "10px",
+                    paddingBottom: "10px",
+                    scrollBehavior: "smooth",
+                  }}
+                >
+                  {images.map((img, i) => (
+                    <img
+                      key={i}
+                      src={img}
+                      alt={`product-${i}`}
+                      style={{
+                        flex: "0 0 auto",
+                        width: "100px",
+                        height: "150px",
+                        objectFit: "cover",
+                        borderRadius: "5px",
+                      }}
+                    />
+                  ))}
+                </div>
+
                 <h4 style={{ margin: "10px 0" }}>{product.series}</h4>
                 <p>
                   <strong>Price:</strong> ₹{product.price || "N/A"}
