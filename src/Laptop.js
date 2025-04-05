@@ -940,7 +940,7 @@ function Laptop() {
             <div className="product-card" key={index} onClick={() => handleImageClick(item, index)}>
               <div className="image-grid">
                 {displayedImages.map((img, imgIndex) => (
-                  <img key={imgIndex} src={`https://backendwith-frontend.vercel.app/${img}`} alt="Product" className="product-image" />
+                  <img key={imgIndex} src={img} alt="Product" className="product-image" />
                 ))}
               </div>
               <div className="product-info">
