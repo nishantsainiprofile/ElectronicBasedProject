@@ -152,7 +152,7 @@
 //   );
 // }
 // export default SearchedBlog;
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MyContext } from "./UseContext";
 
@@ -160,9 +160,9 @@ function SearchedBlog() {
   const { FilteredProducts, setSelectedElectronicProduct } = useContext(MyContext);
   const navigate = useNavigate();
 
-  // State: each product gets its own current image index
   const [imageIndexes, setImageIndexes] = useState({});
 
+  // Extracts image array from product
   const getImageArray = (product) => {
     return (
       product.laptopImages ||
@@ -176,19 +176,22 @@ function SearchedBlog() {
     );
   };
 
-  const handleNext = (index, images) => {
-    setImageIndexes((prev) => ({
-      ...prev,
-      [index]: (prev[index] + 1) % images.length,
-    }));
-  };
+  // Auto update image index every 2 seconds for each product
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setImageIndexes((prevIndexes) => {
+        const updatedIndexes = {};
+        FilteredProducts.forEach((product, index) => {
+          const images = getImageArray(product);
+          const currentIndex = prevIndexes[index] || 0;
+          updatedIndexes[index] = (currentIndex + 1) % images.length;
+        });
+        return updatedIndexes;
+      });
+    }, 2000);
 
-  const handlePrev = (index, images) => {
-    setImageIndexes((prev) => ({
-      ...prev,
-      [index]: (prev[index] - 1 + images.length) % images.length,
-    }));
-  };
+    return () => clearInterval(interval);
+  }, [FilteredProducts]);
 
   const handleProductClick = (product) => {
     setSelectedElectronicProduct(product);
@@ -207,6 +210,7 @@ function SearchedBlog() {
             return (
               <div
                 key={index}
+                onClick={() => handleProductClick(product)}
                 style={{
                   border: "1px solid #ddd",
                   padding: "10px",
@@ -216,47 +220,22 @@ function SearchedBlog() {
                 }}
               >
                 {images.length > 0 ? (
-                  <div onClick={() => handleProductClick(product)}>
-                    <img
-                      src={images[currentIndex]}
-                      alt={product.series}
-                      style={{
-                        width: "100%",
-                        height: "150px",
-                        objectFit: "cover",
-                        borderRadius: "5px",
-                      }}
-                    />
-                  </div>
+                  <img
+                    src={images[currentIndex]}
+                    alt={product.series}
+                    style={{
+                      width: "100%",
+                      height: "150px",
+                      objectFit: "cover",
+                      borderRadius: "5px",
+                      transition: "all 0.5s ease-in-out",
+                    }}
+                  />
                 ) : (
-                  <p>No image found</p>
+                  <p>No image available</p>
                 )}
-
-                {images.length > 1 && (
-                  <div style={{ marginTop: "10px", display: "flex", justifyContent: "center", gap: "10px" }}>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handlePrev(index, images);
-                      }}
-                    >
-                      ⬅️
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleNext(index, images);
-                      }}
-                    >
-                      ➡️
-                    </button>
-                  </div>
-                )}
-
                 <h4 style={{ margin: "10px 0" }}>{product.series}</h4>
-                <p>
-                  <strong>Price:</strong> ₹{product.price || "N/A"}
-                </p>
+                <p><strong>Price:</strong> ₹{product.price || "N/A"}</p>
               </div>
             );
           })}
