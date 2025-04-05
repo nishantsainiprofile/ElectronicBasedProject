@@ -823,7 +823,7 @@ function Laptop() {
           ...(responses[4]?.data?.WatchesData || []),
           ...(responses[5]?.data?.LaptopChargerData || [])
         ];
-
+           console.log(allData);
         setCombinedData(allData.sort(() => Math.random() - 0.5));
         setFindObject(allData);
         setTimeout(() => setLoading(false), 250);
