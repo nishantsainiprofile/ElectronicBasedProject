@@ -160,37 +160,39 @@ import { MyContext } from "./UseContext";
 function SearchedBlog() {
   const { FilteredProducts, setSelectedElectronicProduct } = useContext(MyContext);
   const navigate = useNavigate();
+
   const [currentImageIndex, setCurrentImageIndex] = useState({});
 
-  const handleProductClick = (product) => {
-    setSelectedElectronicProduct(product);
-    navigate(`/SelectedElectronicsId/${product.series}`);
-  };
-
-  const getImages = (product) => {
+  const getImageArray = (product) => {
     return (
       product.laptopImages ||
       product.laptopImage ||
+      product.mobileChargingBatteryImages ||
+      product.mobileChargerImages ||
       product.laptopChargerImages ||
       product.mobileimages ||
       product.watchimages ||
-      product.mobileChargingBatteryImages ||
       []
     );
   };
 
-  const handleNext = (productIndex, totalImages) => {
+  const handleNextImage = (productIndex, images) => {
     setCurrentImageIndex((prev) => ({
       ...prev,
-      [productIndex]: (prev[productIndex] + 1) % totalImages,
+      [productIndex]: (prev[productIndex] + 1) % images.length,
     }));
   };
 
-  const handlePrev = (productIndex, totalImages) => {
+  const handlePrevImage = (productIndex, images) => {
     setCurrentImageIndex((prev) => ({
       ...prev,
-      [productIndex]: (prev[productIndex] - 1 + totalImages) % totalImages,
+      [productIndex]: (prev[productIndex] - 1 + images.length) % images.length,
     }));
+  };
+
+  const handleProductClick = (product) => {
+    setSelectedElectronicProduct(product);
+    navigate(`/SelectedElectronicsId/${product.series}`);
   };
 
   return (
@@ -199,8 +201,9 @@ function SearchedBlog() {
       {FilteredProducts && FilteredProducts.length > 0 ? (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "20px" }}>
           {FilteredProducts.map((product, index) => {
-            const images = getImages(product);
+            const images = getImageArray(product);
             const currentIndex = currentImageIndex[index] || 0;
+
             return (
               <div
                 key={index}
@@ -208,28 +211,51 @@ function SearchedBlog() {
                   border: "1px solid #ddd",
                   padding: "10px",
                   borderRadius: "8px",
-                  cursor: "pointer",
                   textAlign: "center",
+                  cursor: "pointer",
                 }}
                 onClick={() => handleProductClick(product)}
               >
-                {images.length > 0 && (
+                {images.length > 0 ? (
                   <div>
                     <img
                       src={images[currentIndex]}
                       alt={product.series}
-                      style={{ width: "100%", height: "150px", objectFit: "cover" }}
+                      style={{
+                        width: "100%",
+                        height: "150px",
+                        objectFit: "cover",
+                        borderRadius: "5px",
+                      }}
                     />
                     {images.length > 1 && (
-                      <div style={{ marginTop: "10px" }}>
-                        <button onClick={(e) => { e.stopPropagation(); handlePrev(index, images.length); }}>◀️</button>
-                        <button onClick={(e) => { e.stopPropagation(); handleNext(index, images.length); }}>▶️</button>
+                      <div style={{ marginTop: "10px", display: "flex", justifyContent: "center", gap: "10px" }}>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handlePrevImage(index, images);
+                          }}
+                        >
+                          ⬅️
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleNextImage(index, images);
+                          }}
+                        >
+                          ➡️
+                        </button>
                       </div>
                     )}
                   </div>
+                ) : (
+                  <p>No image found</p>
                 )}
                 <h4 style={{ margin: "10px 0" }}>{product.series}</h4>
-                <p><strong>Price:</strong> ₹{product.price || "N/A"}</p>
+                <p>
+                  <strong>Price:</strong> ₹{product.price || "N/A"}
+                </p>
               </div>
             );
           })}
