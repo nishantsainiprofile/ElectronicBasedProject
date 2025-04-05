@@ -248,10 +248,11 @@
 // }
 // export default SearchedBlog;
 import React, { useContext } from "react";
+import Slider from "react-slick";
 import { useNavigate } from "react-router-dom";
-import { Carousel } from "react-responsive-carousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { MyContext } from "./UseContext";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 function SearchedBlog() {
   const { FilteredProducts, setSelectedElectronicProduct } = useContext(MyContext);
@@ -273,6 +274,18 @@ function SearchedBlog() {
       product.watchimages ||
       []
     );
+  };
+
+  // Slick slider settings
+  const sliderSettings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    arrows: false,
   };
 
   return (
@@ -302,15 +315,7 @@ function SearchedBlog() {
                 }}
               >
                 {images.length > 0 ? (
-                  <Carousel
-                    autoPlay
-                    infiniteLoop
-                    showThumbs={false}
-                    showStatus={false}
-                    interval={2000}
-                    showArrows={false}
-                    stopOnHover={false}
-                  >
+                  <Slider {...sliderSettings}>
                     {images.map((img, i) => (
                       <div key={i}>
                         <img
@@ -318,13 +323,14 @@ function SearchedBlog() {
                           alt={`product-${i}`}
                           style={{
                             height: "180px",
+                            width: "100%",
                             objectFit: "cover",
                             borderRadius: "6px",
                           }}
                         />
                       </div>
                     ))}
-                  </Carousel>
+                  </Slider>
                 ) : (
                   <p>No images</p>
                 )}
