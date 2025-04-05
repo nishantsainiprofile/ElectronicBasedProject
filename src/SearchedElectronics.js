@@ -152,7 +152,6 @@
 //   );
 // }
 // export default SearchedBlog;
-// SearchedBlog.js
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MyContext } from "./UseContext";
@@ -161,7 +160,8 @@ function SearchedBlog() {
   const { FilteredProducts, setSelectedElectronicProduct } = useContext(MyContext);
   const navigate = useNavigate();
 
-  const [currentImageIndex, setCurrentImageIndex] = useState({});
+  // State: each product gets its own current image index
+  const [imageIndexes, setImageIndexes] = useState({});
 
   const getImageArray = (product) => {
     return (
@@ -176,17 +176,17 @@ function SearchedBlog() {
     );
   };
 
-  const handleNextImage = (productIndex, images) => {
-    setCurrentImageIndex((prev) => ({
+  const handleNext = (index, images) => {
+    setImageIndexes((prev) => ({
       ...prev,
-      [productIndex]: (prev[productIndex] + 1) % images.length,
+      [index]: (prev[index] + 1) % images.length,
     }));
   };
 
-  const handlePrevImage = (productIndex, images) => {
-    setCurrentImageIndex((prev) => ({
+  const handlePrev = (index, images) => {
+    setImageIndexes((prev) => ({
       ...prev,
-      [productIndex]: (prev[productIndex] - 1 + images.length) % images.length,
+      [index]: (prev[index] - 1 + images.length) % images.length,
     }));
   };
 
@@ -202,7 +202,7 @@ function SearchedBlog() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "20px" }}>
           {FilteredProducts.map((product, index) => {
             const images = getImageArray(product);
-            const currentIndex = currentImageIndex[index] || 0;
+            const currentIndex = imageIndexes[index] || 0;
 
             return (
               <div
@@ -214,10 +214,9 @@ function SearchedBlog() {
                   textAlign: "center",
                   cursor: "pointer",
                 }}
-                onClick={() => handleProductClick(product)}
               >
                 {images.length > 0 ? (
-                  <div>
+                  <div onClick={() => handleProductClick(product)}>
                     <img
                       src={images[currentIndex]}
                       alt={product.series}
@@ -228,30 +227,32 @@ function SearchedBlog() {
                         borderRadius: "5px",
                       }}
                     />
-                    {images.length > 1 && (
-                      <div style={{ marginTop: "10px", display: "flex", justifyContent: "center", gap: "10px" }}>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handlePrevImage(index, images);
-                          }}
-                        >
-                          ⬅️
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleNextImage(index, images);
-                          }}
-                        >
-                          ➡️
-                        </button>
-                      </div>
-                    )}
                   </div>
                 ) : (
                   <p>No image found</p>
                 )}
+
+                {images.length > 1 && (
+                  <div style={{ marginTop: "10px", display: "flex", justifyContent: "center", gap: "10px" }}>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handlePrev(index, images);
+                      }}
+                    >
+                      ⬅️
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleNext(index, images);
+                      }}
+                    >
+                      ➡️
+                    </button>
+                  </div>
+                )}
+
                 <h4 style={{ margin: "10px 0" }}>{product.series}</h4>
                 <p>
                   <strong>Price:</strong> ₹{product.price || "N/A"}
