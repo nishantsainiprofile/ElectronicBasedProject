@@ -477,10 +477,157 @@
 
 // export default PaymentComponent;
 
+// import React, { useState, useEffect, useContext, useRef } from "react";
+// import axios from "axios";
+// import { MyContext } from "./UseContext";
+// import { FaPlus, FaMinus, FaCheck, FaTimes, FaSearch, FaMoneyBillWave } from "react-icons/fa";
+// import "./App.css";
+
+// const PaymentComponent = () => {
+//   const [razorpayKey, setRazorpayKey] = useState("");
+//   const [loading, setLoading] = useState(false);
+//   const [success, setSuccess] = useState(false);
+//   const { selectedElectronics, Email } = useContext(MyContext);
+//   const [quantity, setQuantity] = useState(1);
+//   const [isLocationVerified, setIsLocationVerified] = useState(false);
+//   const [locationMessage, setLocationMessage] = useState("");
+//   const DeleiverAddress = useRef();
+
+//   useEffect(() => {
+//     // fetch("http://localhost:5007/api/get-razorpay-key")
+//     fetch("https://backendwith-frontend.vercel.app/api/get-razorpay-key")
+//       .then((res) => res.json())
+//       .then((data) => setRazorpayKey(data.key))
+//       .catch((error) => console.error("Error fetching Razorpay key:", error));
+//   }, []);
+
+//   const handleQuantityChange = (change) => {
+//     setQuantity((prev) => Math.max(1, prev + change));
+//   };
+
+//   const checkDeliveryAvailability = () => {
+//     const address = DeleiverAddress.current.value;
+//     if (!address) {
+//       alert("Please enter an address.");
+//       return;
+//     }
+
+//     // axios.post("http://localhost:5007/api/check-delivery", { address })
+//     axios.post("https://backendwith-frontend.vercel.app/api/check-delivery", { address })
+//       .then((response) => {
+//         if (response.data.available) {
+//           setLocationMessage("✅ Delivery is available at this location.");
+//           setIsLocationVerified(true);
+//         } else {
+//           setLocationMessage("❌ Delivery is not available at this location.");
+//           setIsLocationVerified(false);
+//         }
+//       })
+//       .catch((error) => {
+//         console.error("Error checking delivery availability:", error);
+//         setLocationMessage("⚠️ Error checking delivery availability.");
+//       });
+//   };
+
+//   const handlePayment = async () => {
+//     if (!razorpayKey || !selectedElectronics || !isLocationVerified) {
+//       alert("Please ensure payment requirements are met.");
+//       return;
+//     }
+
+//     setLoading(true);
+//     try {
+//       // const response = await fetch("http://localhost:5007/api/create-order", {
+//       const response = await fetch("https://backendwith-frontend.vercel.app/api/create-order", {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify({ amount: selectedElectronics.price * quantity })
+//       });
+
+//       if (!response.ok) {
+//         alert("Error creating order");
+//         setLoading(false);
+//         return;
+//       }
+
+//       const orderData = await response.json();
+//       loadRazorpay(orderData.id);
+//     } catch (error) {
+//       alert("Payment processing error");
+//       setLoading(false);
+//     }
+//   };
+
+//   const loadRazorpay = (orderId) => {
+//     const script = document.createElement("script");
+//     script.src = "https://checkout.razorpay.com/v1/checkout.js";
+//     script.onload = () => openRazorpay(orderId);
+//     document.body.appendChild(script);
+//   };
+
+//   const openRazorpay = (orderId) => {
+//     const options = {
+//       key: razorpayKey,
+//       amount: selectedElectronics.price * quantity * 100,
+//       currency: "INR",
+//       name: "Electronics Website",
+//       description: "Purchase Electronics",
+//       order_id: orderId,
+//       handler: function (response) {
+//         setSuccess(true);
+//         setLoading(false);
+        
+//       },
+//       prefill: { name: Email, email: Email },
+//       theme: { color: "#28a745" },
+//       modal: {
+//         ondismiss: function () {
+//           console.log("Payment modal closed by user");
+//           setLoading(false); // Reset loading state if user cancels
+//         },
+//       },
+//     };
+//     const rzp1 = new window.Razorpay(options);
+//     rzp1.open();
+//   };
+
+//   return (
+//     <div className="payment-container">
+//       <div className="payment-box">
+//         <h2 className="checkout-title">🛒 Checkout</h2>
+
+//         <div className="quantity-control">
+//           <button className="qty-btn" onClick={() => handleQuantityChange(-1)}><FaMinus /></button>
+//           <span className="qty-display">{quantity}</span>
+//           <button className="qty-btn" onClick={() => handleQuantityChange(1)}><FaPlus /></button>
+//         </div>
+
+//         <input className="address-input" type="text" placeholder="🏠 Enter delivery address" ref={DeleiverAddress} />
+//         <button className="search-btn" onClick={checkDeliveryAvailability}><FaSearch /> Check Availability</button>
+//         <p className={isLocationVerified ? "valid" : "invalid"}>{locationMessage}</p>
+
+//         <button className="pay-button" onClick={handlePayment} disabled={loading || !isLocationVerified}>
+//           {loading ? "Processing..." : <><FaMoneyBillWave /> Pay Now</>}
+//         </button>
+
+//         {success && <p className="success-message"><FaCheck /> Payment Successful!</p>}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default PaymentComponent;
 import React, { useState, useEffect, useContext, useRef } from "react";
 import axios from "axios";
 import { MyContext } from "./UseContext";
-import { FaPlus, FaMinus, FaCheck, FaTimes, FaSearch, FaMoneyBillWave } from "react-icons/fa";
+import {
+  FaPlus,
+  FaMinus,
+  FaCheck,
+  FaTimes,
+  FaSearch,
+  FaMoneyBillWave,
+} from "react-icons/fa";
 import "./App.css";
 
 const PaymentComponent = () => {
@@ -493,8 +640,8 @@ const PaymentComponent = () => {
   const [locationMessage, setLocationMessage] = useState("");
   const DeleiverAddress = useRef();
 
+  // ✅ Load Razorpay Key
   useEffect(() => {
-    // fetch("http://localhost:5007/api/get-razorpay-key")
     fetch("https://backendwith-frontend.vercel.app/api/get-razorpay-key")
       .then((res) => res.json())
       .then((data) => setRazorpayKey(data.key))
@@ -505,6 +652,7 @@ const PaymentComponent = () => {
     setQuantity((prev) => Math.max(1, prev + change));
   };
 
+  // ✅ Check if delivery available at address
   const checkDeliveryAvailability = () => {
     const address = DeleiverAddress.current.value;
     if (!address) {
@@ -512,8 +660,8 @@ const PaymentComponent = () => {
       return;
     }
 
-    // axios.post("http://localhost:5007/api/check-delivery", { address })
-    axios.post("https://backendwith-frontend.vercel.app/api/check-delivery", { address })
+    axios
+      .post("https://backendwith-frontend.vercel.app/api/check-delivery", { address })
       .then((response) => {
         if (response.data.available) {
           setLocationMessage("✅ Delivery is available at this location.");
@@ -529,6 +677,7 @@ const PaymentComponent = () => {
       });
   };
 
+  // ✅ Start Payment Flow
   const handlePayment = async () => {
     if (!razorpayKey || !selectedElectronics || !isLocationVerified) {
       alert("Please ensure payment requirements are met.");
@@ -537,11 +686,10 @@ const PaymentComponent = () => {
 
     setLoading(true);
     try {
-      // const response = await fetch("http://localhost:5007/api/create-order", {
       const response = await fetch("https://backendwith-frontend.vercel.app/api/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: selectedElectronics.price * quantity })
+        body: JSON.stringify({ amount: selectedElectronics.price * quantity }),
       });
 
       if (!response.ok) {
@@ -558,6 +706,7 @@ const PaymentComponent = () => {
     }
   };
 
+  // ✅ Load Razorpay Script
   const loadRazorpay = (orderId) => {
     const script = document.createElement("script");
     script.src = "https://checkout.razorpay.com/v1/checkout.js";
@@ -565,6 +714,7 @@ const PaymentComponent = () => {
     document.body.appendChild(script);
   };
 
+  // ✅ Razorpay Checkout Configuration
   const openRazorpay = (orderId) => {
     const options = {
       key: razorpayKey,
@@ -573,19 +723,39 @@ const PaymentComponent = () => {
       name: "Electronics Website",
       description: "Purchase Electronics",
       order_id: orderId,
-      handler: function (response) {
+      handler: async function (response) {
         setSuccess(true);
         setLoading(false);
+        const paymentId = response.razorpay_payment_id;
+        const address = DeleiverAddress.current.value;
+
+        try {
+          await axios.post("https://backendwith-frontend.vercel.app/api/save-order", {
+            productId: selectedElectronics._id,
+            productName: selectedElectronics.series,
+            price: selectedElectronics.price * quantity,
+            email: Email,
+            paymentId,
+            useraddress: address,
+            success:success,
+          });
+
+          alert(response.data.message);
+        } catch (error) {
+          console.error("Error saving order:", error);
+          alert("⚠️ Payment successful, but failed to save order.");
+        }
       },
       prefill: { name: Email, email: Email },
       theme: { color: "#28a745" },
       modal: {
         ondismiss: function () {
           console.log("Payment modal closed by user");
-          setLoading(false); // Reset loading state if user cancels
+          setLoading(false);
         },
       },
     };
+
     const rzp1 = new window.Razorpay(options);
     rzp1.open();
   };
@@ -596,20 +766,41 @@ const PaymentComponent = () => {
         <h2 className="checkout-title">🛒 Checkout</h2>
 
         <div className="quantity-control">
-          <button className="qty-btn" onClick={() => handleQuantityChange(-1)}><FaMinus /></button>
+          <button className="qty-btn" onClick={() => handleQuantityChange(-1)}>
+            <FaMinus />
+          </button>
           <span className="qty-display">{quantity}</span>
-          <button className="qty-btn" onClick={() => handleQuantityChange(1)}><FaPlus /></button>
+          <button className="qty-btn" onClick={() => handleQuantityChange(1)}>
+            <FaPlus />
+          </button>
         </div>
 
-        <input className="address-input" type="text" placeholder="🏠 Enter delivery address" ref={DeleiverAddress} />
-        <button className="search-btn" onClick={checkDeliveryAvailability}><FaSearch /> Check Availability</button>
-        <p className={isLocationVerified ? "valid" : "invalid"}>{locationMessage}</p>
+        <input
+          className="address-input"
+          type="text"
+          placeholder="🏠 Enter delivery address"
+          ref={DeleiverAddress}
+        />
+        <button className="search-btn" onClick={checkDeliveryAvailability}>
+          <FaSearch /> Check Availability
+        </button>
+        <p className={isLocationVerified ? "valid" : "invalid"}>
+          {locationMessage}
+        </p>
 
-        <button className="pay-button" onClick={handlePayment} disabled={loading || !isLocationVerified}>
+        <button
+          className="pay-button"
+          onClick={handlePayment}
+          disabled={loading || !isLocationVerified}
+        >
           {loading ? "Processing..." : <><FaMoneyBillWave /> Pay Now</>}
         </button>
 
-        {success && <p className="success-message"><FaCheck /> Payment Successful!</p>}
+        {success && (
+          <p className="success-message">
+            <FaCheck /> Payment Successful!
+          </p>
+        )}
       </div>
     </div>
   );
