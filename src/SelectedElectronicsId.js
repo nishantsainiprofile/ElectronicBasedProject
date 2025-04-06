@@ -137,7 +137,7 @@ function SelectedElectronicsId() {
           border: "1px solid #ddd",
           padding: "20px",
           borderRadius: "12px",
-          maxWidth: "700px",
+          maxWidth: "500px",
           width: "100%",
         }}
       >
