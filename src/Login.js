@@ -55,7 +55,7 @@ function Login() {
   };
 
   return (
-    <div className="grid-container">
+    <div className="grid-container" style={{marginTop:100}}>
       <div className="grid-x grid-padding-x align-center-middle">
         <div className="cell medium-6 large-4">
           {loginMessage !== "Login Successful" ? (
