@@ -730,7 +730,7 @@ const PaymentComponent = () => {
         const address = DeleiverAddress.current.value;
 
         try {
-          await axios.post("https://backendwith-frontend.vercel.app/api/save-order", {
+          await axios.post("https://backendwith-frontend.vercel.app/save-order", {
             productId: selectedElectronics._id,
             productName: selectedElectronics.series,
             price: selectedElectronics.price * quantity,
