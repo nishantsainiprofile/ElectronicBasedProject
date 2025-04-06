@@ -26,6 +26,7 @@ import SelectedElectronicsId from "./SelectedElectronicsId";
 import DebitCardPayment from "./DebitCardPayment";
 import UpiPayment from "./UPIPayment"; 
 import AboutUs from "./AboutUs";
+import PaymentStatus from "./PaymentStatus";
 // import QrScan from "./QRScan"; 
 // import COD from "./COD"; 
 // import MobileChargerDisplay from "./MobileChargerDisplay";
@@ -100,6 +101,7 @@ function RouterPath(){
             {/* <Route path="/qr-scan" element={<QrScan />} /> */}
             {/* <Route path="/cod" element={<COD />} /> */}
             <Route path="/AboutUs" element={<AboutUs />} />
+            <Route path="/PaymentStatus" element={<PaymentStatus/>}/>
           </Routes>
     </BrowserRouter>
     </MyContext.Provider>

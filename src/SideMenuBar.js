@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaBars, FaTimes, FaHome, FaUser, FaCog, FaSignOutAlt } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import "./App.css";
 
 function SideMenuBar() {
@@ -27,6 +28,7 @@ function SideMenuBar() {
           <li onClick={closeSidebar}><FaUser /> <span>Profile</span></li>
           <li onClick={closeSidebar}><FaCog /> <span>Settings</span></li>
           <li onClick={closeSidebar}><FaSignOutAlt /> <span>Logout</span></li>
+          <Link to="/PaymentStatus">PaymentStatus</Link>
         </ul>
       </div>
 
