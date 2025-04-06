@@ -7,6 +7,7 @@ const PaymentStatus = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const {Email} =useContext(MyContext);
+  console.log(Email);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -14,6 +15,7 @@ const PaymentStatus = () => {
         const response = await axios.post("https://backendwith-frontend.vercel.app/api/order-status", {
             email: Email,
           });
+          console.log(response.data);
         setOrders(response.data);
       } catch (err) {
         console.error(err);
