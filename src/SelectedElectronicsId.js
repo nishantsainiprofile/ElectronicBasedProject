@@ -115,7 +115,7 @@ function SelectedElectronicsId() {
     return <p style={{ textAlign: "center", marginTop: "50px" }}>No product details found!</p>;
   }
 
-  // Get all image arrays
+  // Get the images array from product object
   const images =
     SelectedElectronicProduct.laptopImages ||
     SelectedElectronicProduct.mobileChargingBatteryImages ||
@@ -141,11 +141,12 @@ function SelectedElectronicsId() {
           width: "100%",
         }}
       >
-        {/* Images Grid */}
+        {/* Images Grid - 2x2 */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr 1fr",
+            gridTemplateColumns: "repeat(2, 100px)",
+            justifyContent: "center",
             gap: "15px",
             marginBottom: "20px",
           }}
@@ -154,8 +155,8 @@ function SelectedElectronicsId() {
             <div
               key={i}
               style={{
-                width: "100%",
-                aspectRatio: "1 / 1",
+                width: "100px",
+                height: "100px",
                 overflow: "hidden",
                 borderRadius: "10px",
                 backgroundColor: "#f0f0f0",
@@ -175,9 +176,16 @@ function SelectedElectronicsId() {
           ))}
         </div>
 
-        {/* Product Info */}
+        {/* Product Info (excluding image fields) */}
         {Object.entries(SelectedElectronicProduct).map(([key, value], index) => (
-          !["laptopImages", "mobileChargingBatteryImages", "mobileChargerImages", "laptopChargerImages", "mobileimages", "watchimages"].includes(key) && (
+          ![
+            "laptopImages",
+            "mobileChargingBatteryImages",
+            "mobileChargerImages",
+            "laptopChargerImages",
+            "mobileimages",
+            "watchimages",
+          ].includes(key) && (
             <p key={index} style={{ margin: "8px 0", textAlign: "left" }}>
               <strong>{formatKey(key)}:</strong> {typeof value === "object" ? JSON.stringify(value) : value}
             </p>
@@ -205,6 +213,7 @@ function SelectedElectronicsId() {
   );
 }
 
+// Utility to format keys like "productName" => "Product Name"
 function formatKey(key) {
   return key
     .replace(/([A-Z])/g, " $1")
