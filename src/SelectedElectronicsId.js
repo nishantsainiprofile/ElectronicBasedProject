@@ -112,42 +112,25 @@ function SelectedElectronicsId() {
   const navigate = useNavigate();
 
   if (!SelectedElectronicProduct) {
-    return (
-      <p style={{ textAlign: "center", marginTop: "50px" }}>
-        No product details found!
-      </p>
-    );
+    return <p style={{ textAlign: "center", marginTop: "50px" }}>No product details found!</p>;
   }
 
-  // This will return the first array of images it finds
-  const getImageArray = (product) => {
-    return (
-      product.laptopImages ||
-      product.mobileChargingBatteryImages ||
-      product.mobileChargerImages ||
-      product.laptopChargerImages ||
-      product.mobileimages ||
-      product.watchimages ||
-      []
-    );
-  };
+  // Get all image arrays
+  const images =
+    SelectedElectronicProduct.laptopImages ||
+    SelectedElectronicProduct.mobileChargingBatteryImages ||
+    SelectedElectronicProduct.mobileChargerImages ||
+    SelectedElectronicProduct.laptopChargerImages ||
+    SelectedElectronicProduct.mobileimages ||
+    SelectedElectronicProduct.watchimages ||
+    [];
 
   const handlePurchase = () => {
     navigate("/Payment");
   };
 
-  const images = getImageArray(SelectedElectronicProduct).slice(0, 4); // only first 4 images
-
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "80vh",
-        padding: "20px",
-      }}
-    >
+    <div style={{ display: "flex", justifyContent: "center", padding: "40px" }}>
       <div
         style={{
           textAlign: "center",
@@ -156,56 +139,50 @@ function SelectedElectronicsId() {
           borderRadius: "12px",
           maxWidth: "700px",
           width: "100%",
-          backgroundColor: "#fafafa",
         }}
       >
-        {/* Images in 2x2 Grid */}
+        {/* Images Grid */}
         <div
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
-            gap: "10px",
+            gap: "15px",
             marginBottom: "20px",
           }}
         >
-          {images.map((img, i) => (
-            <img
+          {images.slice(0, 4).map((img, i) => (
+            <div
               key={i}
-              src={img}
-              alt={`product-${i}`}
               style={{
                 width: "100%",
-                height: "160px",
-                objectFit: "cover",
-                borderRadius: "8px",
+                aspectRatio: "1 / 1",
+                overflow: "hidden",
+                borderRadius: "10px",
+                backgroundColor: "#f0f0f0",
               }}
-            />
+            >
+              <img
+                src={img}
+                alt={`product-${i}`}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  display: "block",
+                }}
+              />
+            </div>
           ))}
         </div>
 
-        {/* Product Details */}
-        <div style={{ textAlign: "left" }}>
-          {Object.entries(SelectedElectronicProduct).map(([key, value], index) => {
-            // Skip image keys
-            const imageKeys = [
-              "laptopImages",
-              "laptopImage",
-              "mobileChargingBatteryImages",
-              "mobileChargerImages",
-              "laptopChargerImages",
-              "mobileimages",
-              "watchimages",
-            ];
-            if (imageKeys.includes(key)) return null;
-
-            return (
-              <p key={index} style={{ margin: "8px 0" }}>
-                <strong>{formatKey(key)}:</strong>{" "}
-                {typeof value === "object" ? JSON.stringify(value) : value}
-              </p>
-            );
-          })}
-        </div>
+        {/* Product Info */}
+        {Object.entries(SelectedElectronicProduct).map(([key, value], index) => (
+          !["laptopImages", "mobileChargingBatteryImages", "mobileChargerImages", "laptopChargerImages", "mobileimages", "watchimages"].includes(key) && (
+            <p key={index} style={{ margin: "8px 0", textAlign: "left" }}>
+              <strong>{formatKey(key)}:</strong> {typeof value === "object" ? JSON.stringify(value) : value}
+            </p>
+          )
+        ))}
 
         {/* Purchase Button */}
         <button
