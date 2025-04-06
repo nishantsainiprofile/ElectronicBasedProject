@@ -38,42 +38,176 @@
 
 // export default SelectedElectronicsId;
 
+// import { useContext } from "react";
+// import { useNavigate } from "react-router-dom"; // for navigation
+// import { MyContext } from "./UseContext";
+
+// function SelectedElectronicsId() {
+//   const { SelectedElectronicProduct } = useContext(MyContext);
+//   console.log(SelectedElectronicProduct , "this is the selected Product");
+//   const navigate = useNavigate();
+
+//   if (!SelectedElectronicProduct) {
+//     return <p style={{ textAlign: "center", marginTop: "50px" }}>No product details found!</p>;
+//   }
+
+//   const handlePurchase = () => {
+//     navigate("/Payment"); // assuming "/payment" route is your Payment.js component
+//   };
+
+//   return (
+//     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh" }}>
+//       <div style={{ textAlign: "center", border: "1px solid #ddd", padding: "20px", borderRadius: "12px", maxWidth: "600px", width: "100%" }}>
+//       <img
+//   // src={`http://localhost:5007/${selectedElectronics.laptopImages.replace(/\\/g, "/")}`}
+//   src={SelectedElectronicProduct.laptopImages||SelectedElectronicProduct.mobileChargingBatteryImages|| SelectedElectronicProduct.mobileChargerImages||SelectedElectronicProduct.laptopChargerImages
+//     ||SelectedElectronicProduct.mobileimages||SelectedElectronicProduct.watchimages
+//   }
+//   alt={SelectedElectronicProduct.series}
+//   style={{ width: "100%", height: "200px", objectFit: "contain", marginBottom: "20px" }}
+// />
+
+//      {Object.entries(SelectedElectronicProduct).map(([key, value], index) => (
+//   key !== "laptopImage" && (
+//     <p key={index} style={{ margin: "8px 0" }}>
+//       <strong>{formatKey(key)}:</strong> {typeof value === "object" ? JSON.stringify(value) : value}
+//     </p>
+//   )
+// ))}
+
+
+//         <button
+//           onClick={handlePurchase}
+//           style={{
+//             marginTop: "20px",
+//             padding: "10px 20px",
+//             backgroundColor: "#4CAF50",
+//             color: "#fff",
+//             border: "none",
+//             borderRadius: "8px",
+//             cursor: "pointer",
+//             fontSize: "16px"
+//           }}
+//         >
+//           Purchase Now
+//         </button>
+//       </div>
+//     </div>
+//   );
+// }
+
+// function formatKey(key) {
+//   return key
+//     .replace(/([A-Z])/g, ' $1')
+//     .replace(/_/g, ' ')
+//     .replace(/^./, (str) => str.toUpperCase());
+// }
+// export default SelectedElectronicsId;
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom"; // for navigation
+import { useNavigate } from "react-router-dom";
 import { MyContext } from "./UseContext";
 
 function SelectedElectronicsId() {
-  const { selectedElectronics } = useContext(MyContext);
-  console.log(selectedElectronics , "this is the selected Product");
+  const { SelectedElectronicProduct } = useContext(MyContext);
   const navigate = useNavigate();
 
-  if (!selectedElectronics) {
-    return <p style={{ textAlign: "center", marginTop: "50px" }}>No product details found!</p>;
+  if (!SelectedElectronicProduct) {
+    return (
+      <p style={{ textAlign: "center", marginTop: "50px" }}>
+        No product details found!
+      </p>
+    );
   }
 
-  const handlePurchase = () => {
-    navigate("/Payment"); // assuming "/payment" route is your Payment.js component
+  // This will return the first array of images it finds
+  const getImageArray = (product) => {
+    return (
+      product.laptopImages ||
+      product.mobileChargingBatteryImages ||
+      product.mobileChargerImages ||
+      product.laptopChargerImages ||
+      product.mobileimages ||
+      product.watchimages ||
+      []
+    );
   };
 
+  const handlePurchase = () => {
+    navigate("/Payment");
+  };
+
+  const images = getImageArray(SelectedElectronicProduct).slice(0, 4); // only first 4 images
+
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh" }}>
-      <div style={{ textAlign: "center", border: "1px solid #ddd", padding: "20px", borderRadius: "12px", maxWidth: "600px", width: "100%" }}>
-      <img
-  // src={`http://localhost:5007/${selectedElectronics.laptopImages.replace(/\\/g, "/")}`}
-  src={`https://backendwith-frontend.vercel.app/${selectedElectronics.laptopImages.replace(/\\/g, "/")}`}
-  alt={selectedElectronics.series}
-  style={{ width: "100%", height: "200px", objectFit: "contain", marginBottom: "20px" }}
-/>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "80vh",
+        padding: "20px",
+      }}
+    >
+      <div
+        style={{
+          textAlign: "center",
+          border: "1px solid #ddd",
+          padding: "20px",
+          borderRadius: "12px",
+          maxWidth: "700px",
+          width: "100%",
+          backgroundColor: "#fafafa",
+        }}
+      >
+        {/* Images in 2x2 Grid */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "10px",
+            marginBottom: "20px",
+          }}
+        >
+          {images.map((img, i) => (
+            <img
+              key={i}
+              src={img}
+              alt={`product-${i}`}
+              style={{
+                width: "100%",
+                height: "160px",
+                objectFit: "cover",
+                borderRadius: "8px",
+              }}
+            />
+          ))}
+        </div>
 
-     {Object.entries(selectedElectronics).map(([key, value], index) => (
-  key !== "laptopImage" && (
-    <p key={index} style={{ margin: "8px 0" }}>
-      <strong>{formatKey(key)}:</strong> {typeof value === "object" ? JSON.stringify(value) : value}
-    </p>
-  )
-))}
+        {/* Product Details */}
+        <div style={{ textAlign: "left" }}>
+          {Object.entries(SelectedElectronicProduct).map(([key, value], index) => {
+            // Skip image keys
+            const imageKeys = [
+              "laptopImages",
+              "laptopImage",
+              "mobileChargingBatteryImages",
+              "mobileChargerImages",
+              "laptopChargerImages",
+              "mobileimages",
+              "watchimages",
+            ];
+            if (imageKeys.includes(key)) return null;
 
+            return (
+              <p key={index} style={{ margin: "8px 0" }}>
+                <strong>{formatKey(key)}:</strong>{" "}
+                {typeof value === "object" ? JSON.stringify(value) : value}
+              </p>
+            );
+          })}
+        </div>
 
+        {/* Purchase Button */}
         <button
           onClick={handlePurchase}
           style={{
@@ -84,7 +218,7 @@ function SelectedElectronicsId() {
             border: "none",
             borderRadius: "8px",
             cursor: "pointer",
-            fontSize: "16px"
+            fontSize: "16px",
           }}
         >
           Purchase Now
@@ -96,8 +230,8 @@ function SelectedElectronicsId() {
 
 function formatKey(key) {
   return key
-    .replace(/([A-Z])/g, ' $1')
-    .replace(/_/g, ' ')
+    .replace(/([A-Z])/g, " $1")
+    .replace(/_/g, " ")
     .replace(/^./, (str) => str.toUpperCase());
 }
 
