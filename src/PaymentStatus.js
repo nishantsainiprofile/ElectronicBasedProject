@@ -6,13 +6,13 @@ const PaymentStatus = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const {email} =useContext(MyContext);
+  const {Email} =useContext(MyContext);
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const response = await axios.post("https://backendwith-frontend.vercel.app/api/order-status", {
-            email: email,
+            email: Email,
           });
         setOrders(response.data);
       } catch (err) {
@@ -23,8 +23,8 @@ const PaymentStatus = () => {
       }
     };
 
-    if (email) fetchOrders();
-  }, [email]);
+    if (Email) fetchOrders();
+  }, [Email]);
 
   if (loading) return <p>Loading orders...</p>;
   if (error) return <p>{error}</p>;
@@ -33,7 +33,7 @@ const PaymentStatus = () => {
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">Payment Status</h2>
       {orders.length === 0 ? (
-        <p>No orders found for <strong>{email}</strong>.</p>
+        <p>No orders found for <strong>{Email}</strong>.</p>
       ) : (
         <div className="grid gap-4">
           {orders.map((order, index) => (
