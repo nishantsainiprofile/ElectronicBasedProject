@@ -12,7 +12,7 @@ const PaymentStatus = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.post("https://backendwith-frontend.vercel.app/api/order-status", {
+        const response = await axios.get("https://backendwith-frontend.vercel.app/api/order-status", {
             email: Email,
           });
           console.log(response.data);
