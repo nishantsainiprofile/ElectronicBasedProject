@@ -18,7 +18,7 @@ const PaymentStatus = () => {
           console.log(response.data);
         setOrders(response.data);
       } catch (err) {
-        console.error(err);
+        console.log(err);
         setError("Failed to fetch orders.");
       } finally {
         setLoading(false);
