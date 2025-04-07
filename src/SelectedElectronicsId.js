@@ -187,7 +187,7 @@ function SelectedElectronicsId() {
             "watchimages",
           ].includes(key) && (
             <p key={index} style={{ margin: "8px 0", textAlign: "left" }}>
-              <strong style={{marginLeft:50}}>{formatKey(key)}:</strong> {typeof value === "object" ? JSON.stringify(value) : value}
+              <strong style={{marginLeft:100}}>{formatKey(key)}:</strong> {typeof value === "object" ? JSON.stringify(value) : value}
             </p>
           )
         ))}
